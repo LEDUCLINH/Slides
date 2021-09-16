@@ -1,9 +1,11 @@
 import type { NextPage } from 'next';
 import { useState, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/intergations/firebase';
+import { withRedux } from '@/intergations/redux';
 
 import Canvas from '@/canvas/Canvas';
 import BackgroundPro from '@/canvas/objects/BachgroundPro';
@@ -17,14 +19,18 @@ import Color from '@/components/Color/index';
 
 import { backgroundPro } from '@/canvas/constants/defaults';
 
+import { updateSlide } from '@/actions/slides';
+
 const Home: NextPage = () => {
   const [canvas, setCanvas]: any = useState();
   const [width, setWidth]: any = useState(null);
   const [widthBg, setWidthBg] = useState(1200);
   const [heightBg, setHeightBg] = useState(600);
-  const [slides, setSlides]: any = useState([]);
   const [active, setActive] = useState(0);
   const [tabActive, setTabActive] = useState(0);
+
+  const slides = useSelector((state: any) => state.slides);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchsData = async () => {
@@ -140,21 +146,23 @@ const Home: NextPage = () => {
       }
     });
 
-    if (canvas) {
-      if (slides.length == 0) {
-        const json: any = {
+    if (slides.length == 0) {
+      canvas?.loadFromJSON(
+        {
           objects: [backgroundPro],
-        };
-
-        setSlides([json]);
-      }
+        },
+        canvas?.renderAll.bind(canvas),
+      );
+    } else {
       canvas?.loadFromJSON(slides[active], canvas?.renderAll.bind(canvas));
-      canvas?.requestRenderAll();
-      canvas?.renderAll();
     }
-    //
-  }, [canvas, slides]);
 
+    canvas?.requestRenderAll();
+    canvas?.renderAll();
+    //
+  }, [canvas]);
+
+  console.log(slides, 'slides');
   return (
     <div className="">
       <Tab tabActive={tabActive} setTabActive={setTabActive} />
@@ -163,13 +171,7 @@ const Home: NextPage = () => {
         <Color canvas={canvas} widthBg={widthBg} heightBg={heightBg} />
       </Toolbar>
       <Canvas setCanvas={setCanvas} />
-      <Slide
-        canvas={canvas}
-        slides={slides}
-        active={active}
-        setSlides={setSlides}
-        setActive={setActive}
-      />
+      <Slide canvas={canvas} active={active} setActive={setActive} />
     </div>
   );
 };
@@ -181,4 +183,4 @@ if (process.browser) {
   windowFabric.BackgroundPro = BackgroundPro;
 }
 
-export default Home;
+export default withRedux(Home);

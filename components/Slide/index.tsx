@@ -2,21 +2,24 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import { EllipsisOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Button } from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { backgroundPro } from '@/canvas/constants/defaults';
 
 import Style from './Style';
+import { updateSlide } from '@/actions/slides';
 
 interface Props {
-  slides: any;
   active: any;
-  setSlides: any;
   setActive: any;
   canvas: any;
 }
 
-export default function Index({ canvas, slides, active, setSlides, setActive }: Props) {
+export default function Index({ canvas, active, setActive }: Props) {
   const [item, setItem] = useState(0);
+
+  const slides = useSelector((state: any) => state.slides);
+  const dispatch = useDispatch();
 
   const addSlide = () => {
     const objs: any = {
@@ -26,21 +29,16 @@ export default function Index({ canvas, slides, active, setSlides, setActive }: 
     canvas?.getObjects().forEach((item: any) => objs.objects.push(item.toJSON()));
 
     const result = [...slides];
-
     result[active] = objs;
-    console.log(result, 'result');
-    setSlides([...result, { objects: [backgroundPro] }]);
 
-    canvas?.loadFromJSON(slides[active], canvas?.renderAll.bind(canvas));
-    canvas.requestRenderAll();
-    canvas.renderAll();
+    dispatch(updateSlide([...result, { objects: [backgroundPro] }]));
   };
 
   const handleSlide = (v: any) => {
     const result = [...slides];
     result.splice(item, 1);
 
-    setSlides(result);
+    dispatch(updateSlide([...result]));
   };
 
   const menu = (
@@ -58,12 +56,33 @@ export default function Index({ canvas, slides, active, setSlides, setActive }: 
     </Menu>
   );
 
+  const handleItem = (v: number) => {
+    setActive(v);
+
+    const objs: any = {
+      objects: [],
+    };
+
+    canvas?.getObjects().forEach((item: any) => objs.objects.push(item.toJSON()));
+
+    const result = [...slides];
+    result[v] = objs;
+
+    dispatch(updateSlide([...result]));
+
+    canvas?.loadFromJSON(result[v], canvas?.renderAll.bind(canvas));
+    canvas?.requestRenderAll();
+    canvas?.renderAll();
+  };
+
   return (
     <Style>
       <div className="slide-wrap">
         {slides.map((slide: any, index: number) => (
           <div
-            onClick={() => setActive(index)}
+            onClick={() => {
+              handleItem(index);
+            }}
             key={index}
             className={classnames('slide-item', active === index && 'slide-item-active')}
           >

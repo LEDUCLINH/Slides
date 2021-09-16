@@ -19,7 +19,8 @@
       "@/components/*": ["components/*"],
       "@/canvas/*": ["canvas/*"],
       "@/svg/*": ["svg/*"],
-      "@/intergations/*": ["intergations/*"]
+      "@/intergations/*": ["intergations/*"],
+      "@/actions/*": ["actions/*"]
     }
   },
   "rules": {

@@ -23,7 +23,7 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
     // console.log(rectOptions.width, rectOptions.width, 'ahihi');
 
     this.on('added', () => {
-      const center = this.canvas.getCenter();
+      const center = this.canvas?.getCenter();
       this.top = center.top;
       this.left = center.left;
       const zoomWidth = rectOptions.typeRender ? 0 : 0.25;
@@ -41,24 +41,24 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
             backgroundColor: rectOptions.fill || '#fff',
           });
 
-          this.canvas.setBackgroundImage(myImg, this.canvas.renderAll.bind(this.canvas));
+          this.canvas?.setBackgroundImage(myImg, this.canvas?.renderAll.bind(this.canvas));
           if (myImg.width >= myImg.height) {
-            this.canvas.setViewportTransform([
-              this.canvas.width / myImg.width - 0.1,
+            this.canvas?.setViewportTransform([
+              this.canvas?.width / myImg.width - 0.1,
               0,
               0,
-              this.canvas.width / myImg.width - 0.1,
-              this.canvas.getCenter().left,
-              this.canvas.getCenter().top,
+              this.canvas?.width / myImg.width - 0.1,
+              this.canvas?.getCenter().left,
+              this.canvas?.getCenter().top,
             ]);
           } else {
-            this.canvas.setViewportTransform([
-              this.canvas.height / myImg.height - zoomWidth,
+            this.canvas?.setViewportTransform([
+              this.canvas?.height / myImg.height - zoomWidth,
               0,
               0,
-              this.canvas.height / myImg.height - zoomWidth,
-              this.canvas.getCenter().left,
-              this.canvas.getCenter().top,
+              this.canvas?.height / myImg.height - zoomWidth,
+              this.canvas?.getCenter().left,
+              this.canvas?.getCenter().top,
             ]);
           }
 
@@ -66,7 +66,7 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
           if (rectOptions.typeRender) {
             fabric.Object.NUM_FRACTION_DIGITS = 10;
             const link = document.createElement('a');
-            const dataURL = this.canvas.toDataURL({ format: 'png' });
+            const dataURL = this.canvas?.toDataURL({ format: 'png' });
             link.download = 'image.png';
             link.href = dataURL;
             document.body.appendChild(link);
@@ -99,55 +99,58 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
             });
             myImg.filters.push(filter);
             myImg.applyFilters();
-            this.canvas.setBackgroundImage(myImg, this.canvas.renderAll.bind(this.canvas));
+            this.canvas?.setBackgroundImage(myImg, this.canvas?.renderAll.bind(this.canvas));
 
-            if (this.canvas.width <= this.canvas.height) {
-              this.canvas.setViewportTransform([
-                this.canvas.width / widthBg - zoomWidth,
+            if (this.canvas?.width <= this.canvas?.height) {
+              this.canvas?.setViewportTransform([
+                this.canvas?.width / widthBg - zoomWidth,
                 0,
                 0,
-                this.canvas.width / widthBg - zoomWidth,
-                this.canvas.getCenter().left + 211,
-                this.canvas.getCenter().top + zoomTop,
+                this.canvas?.width / widthBg - zoomWidth,
+                this.canvas?.getCenter().left + 211,
+                this.canvas?.getCenter().top + zoomTop,
               ]);
-              this.canvas.requestRenderAll();
-              this.canvas.renderAll();
+              this.canvas?.requestRenderAll();
+              this.canvas?.renderAll();
             } else {
-              this.canvas.setViewportTransform([
-                this.canvas.height / heightBg - zoomWidth,
+              this.canvas?.setViewportTransform([
+                this.canvas?.height / heightBg - zoomWidth,
                 0,
                 0,
-                this.canvas.height / heightBg - zoomWidth,
-                this.canvas.getCenter().left + 211,
-                this.canvas.getCenter().top + zoomTop,
+                this.canvas?.height / heightBg - zoomWidth,
+                this.canvas?.getCenter().left + 211,
+                this.canvas?.getCenter().top + zoomTop,
               ]);
-              this.canvas.requestRenderAll();
-              this.canvas.renderAll();
+              this.canvas?.requestRenderAll();
+              this.canvas?.renderAll();
             }
 
-            let scaleX = (this.canvas.getWidth() - 211) / widthBg;
-            const scaleY = this.canvas.getHeight() / heightBg;
+            let scaleX = (this.canvas?.getWidth() - 211) / widthBg;
+            const scaleY = this.canvas?.getHeight() / heightBg;
             if (heightBg >= widthBg) {
               scaleX = scaleY;
-              if (this.canvas.getWidth() < widthBg * scaleX) {
-                scaleX = scaleX * (this.canvas.getWidth() / (widthBg * scaleX));
+              if (this.canvas?.getWidth() < widthBg * scaleX) {
+                scaleX = scaleX * (this.canvas?.getWidth() / (widthBg * scaleX));
               }
             } else {
-              if (this.canvas.getHeight() < heightBg * scaleX) {
-                scaleX = scaleX * (this.canvas.getHeight() / (heightBg * scaleX));
+              if (this.canvas?.getHeight() < heightBg * scaleX) {
+                scaleX = scaleX * (this.canvas?.getHeight() / (heightBg * scaleX));
               }
             }
-            const center = this.canvas.getCenter();
+            const center = this.canvas?.getCenter();
 
-            this.canvas.zoomToPoint(new fabric.Point(center.left + 211, center.top), scaleX - 0.25);
-            this.canvas.requestRenderAll();
-            this.canvas.renderAll();
+            this.canvas?.zoomToPoint(
+              new fabric.Point(center.left + 211, center.top),
+              scaleX - 0.25,
+            );
+            this.canvas?.requestRenderAll();
+            this.canvas?.renderAll();
 
             //render image
             if (rectOptions.typeRender) {
               fabric.Object.NUM_FRACTION_DIGITS = 10;
               const link = document.createElement('a');
-              const dataURL = this.canvas.toDataURL({ format: 'png' });
+              const dataURL = this.canvas?.toDataURL({ format: 'png' });
               link.download = 'image.png';
               link.href = dataURL;
               document.body.appendChild(link);
@@ -160,11 +163,11 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
         // })
       }
 
-      this.canvas.renderAll();
+      this.canvas?.renderAll();
     });
 
     this.on('removed', () => {
-      this.canvas.remove(this.text);
+      this.canvas?.remove(this.text);
     });
 
     this.on('scaling', () => {
@@ -185,14 +188,14 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
       this.rangeLeft = e.target.image?.left - this.left;
       this.rangeTop = e.target.image?.top - this.top;
 
-      this.canvas.renderAll();
+      this.canvas?.renderAll();
     });
 
     this.on('mousedown:before', (event: any) => {
       this.selectable = true;
       this.evented = true;
       this.stroke = 'red';
-      this.canvas.setActiveObject(this);
+      this.canvas?.setActiveObject(this);
 
       if (this.image) {
         // set range left vs top before move
@@ -203,41 +206,41 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
         this.image.selectable = false;
         this.image.evented = false;
 
-        this.canvas.setActiveObject(this);
+        this.canvas?.setActiveObject(this);
         this.selectable = true;
       }
-      this._prevObjectStacking = this.canvas.preserveObjectStacking;
+      this._prevObjectStacking = this.canvas?.preserveObjectStacking;
       this.canvas.preserveObjectStacking = true;
       this.strokeWidth = 0;
-      this.canvas.renderAll();
+      this.canvas?.renderAll();
     });
 
     this.on('mousedblclick', () => {
-      this.canvas.centerObject(this);
+      this.canvas?.centerObject(this);
 
-      return this.canvas.renderAll();
+      return this.canvas?.renderAll();
     });
 
     this.on('selected', () => {
       this.selectable = true;
-      this._prevObjectStacking = this.canvas.preserveObjectStacking;
+      this._prevObjectStacking = this.canvas?.preserveObjectStacking;
       this.canvas.preserveObjectStacking = true;
-      this.canvas.renderAll();
+      this.canvas?.renderAll();
     });
 
     this.on('deselected', () => {
       this.canvas.preserveObjectStacking = this._prevObjectStacking;
       this.strokeWidth = 1;
-      this.canvas.renderAll();
+      this.canvas?.renderAll();
     });
   },
 
   setBackground: function (zoom: any) {
-    const center = this.canvas.getCenter();
+    const center = this.canvas?.getCenter();
 
-    this.canvas.zoomToPoint({ x: center.left, y: center.top }, zoom);
+    this.canvas?.zoomToPoint({ x: center.left, y: center.top }, zoom);
 
-    return this.canvas.renderAll();
+    return this.canvas?.renderAll();
   },
 
   updatePan: function () {},
