@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
 
 import { collection, getDocs } from 'firebase/firestore';
@@ -13,6 +13,7 @@ import Panel from '@/components/Panel/index';
 import Tab from '@/components/Tab/index';
 import Slide from '@/components/Slide/index';
 import Toolbar from '@/components/Toolbar/index';
+import Color from '@/components/Color/index';
 
 import { backgroundPro } from '@/canvas/constants/defaults';
 
@@ -158,7 +159,9 @@ const Home: NextPage = () => {
     <div className="">
       <Tab tabActive={tabActive} setTabActive={setTabActive} />
       <Panel tabActive={tabActive} canvas={canvas} />
-      <Toolbar />
+      <Toolbar>
+        <Color canvas={canvas} widthBg={widthBg} heightBg={heightBg} />
+      </Toolbar>
       <Canvas setCanvas={setCanvas} />
       <Slide
         canvas={canvas}
