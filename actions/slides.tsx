@@ -11,3 +11,10 @@ export const updateSlideItem = (data: any) => {
     payload: data,
   };
 };
+
+export const updateSlideActive = (data: any) => {
+  return {
+    type: 'UPDATE_SLIDE_ACTIVE_ITEM',
+    payload: data,
+  };
+};

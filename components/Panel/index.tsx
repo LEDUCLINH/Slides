@@ -8,7 +8,7 @@ interface Props {
   tabActive: number;
   canvas: any;
   slides: any;
-  active: number;
+  active: any;
 }
 
 export default function index({ tabActive, canvas, slides, active }: Props) {

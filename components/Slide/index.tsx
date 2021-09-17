@@ -16,37 +16,38 @@ import Data from '@/canvas/utils/InitialsLayer.json';
 
 interface Props {
   active: any;
-  setActive: any;
   canvas: any;
   widthBg: any;
   heightBg: any;
   color: any;
 }
 
-export default function Index({ canvas, active, setActive, widthBg, heightBg, color }: Props) {
+export default function Index({ canvas, active, widthBg, heightBg, color }: Props) {
   const [item, setItem] = useState(0);
 
-  const slides = useSelector((state: any) => state.slides);
+  const slides = useSelector((state: any) => state.slides.slides);
   const dispatch = useDispatch();
 
   const addSlide = () => {
     const objs: any = {
-      objects: [],
+      objects: [backgroundPro],
     };
 
     canvas?.getObjects().forEach((item: any) => objs.objects.push(item.toJSON()));
 
     const result = [...slides];
-    result[active] = objs;
+    result[active.current] = objs;
 
-    dispatch(updateSlide([...result, { objects: [backgroundPro] }]));
+    dispatch(
+      updateSlide({ active: active.current, slides: [...result, { objects: [backgroundPro] }] }),
+    );
   };
 
   const handleSlide = (v: any) => {
     const result = [...slides];
     result.splice(item, 1);
 
-    dispatch(updateSlide([...result]));
+    dispatch(updateSlide({ active: active.current, slides: [...result] }));
   };
 
   const menu = (
@@ -129,18 +130,20 @@ export default function Index({ canvas, active, setActive, widthBg, heightBg, co
   };
 
   const handleItem = (v: number) => {
-    setActive(v);
+    active.current = v;
 
     const objs: any = {
       objects: [],
     };
+
+    canvas?.clear();
 
     canvas?.getObjects().forEach((item: any) => objs.objects.push(item.toJSON()));
 
     const result = [...slides];
     result[v] = objs;
 
-    dispatch(updateSlide(slides));
+    dispatch(updateSlide({ active: v, slides }));
 
     if (slides[v]) {
       canvas.clear();
@@ -157,6 +160,7 @@ export default function Index({ canvas, active, setActive, widthBg, heightBg, co
         }
       }
     }
+
     canvas?.requestRenderAll();
     canvas?.renderAll();
   };
@@ -170,7 +174,7 @@ export default function Index({ canvas, active, setActive, widthBg, heightBg, co
               handleItem(index);
             }}
             key={index}
-            className={classnames('slide-item', active === index && 'slide-item-active')}
+            className={classnames('slide-item', active.current === index && 'slide-item-active')}
           >
             <Dropdown trigger={['click']} overlay={menu} placement="topCenter" arrow>
               <span

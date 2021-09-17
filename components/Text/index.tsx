@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 interface Props {
   canvas: any;
   slides: any;
-  active: number;
+  active: any;
 }
 
 export default function Index({ canvas, slides, active }: Props) {
@@ -47,12 +47,13 @@ export default function Index({ canvas, slides, active }: Props) {
 
     dispatch(
       updateSlideItem({
-        objects: [...slides[active].objects, newTextBoxPro.toJSON()],
-        active,
+        objects: [...slides[active.current].objects, newTextBoxPro.toJSON()],
+        active: active.current,
       }),
     );
 
     canvas.add(newTextBoxPro);
+
     canvas.setActiveObject(newTextBoxPro);
     canvas.renderAll();
   };

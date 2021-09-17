@@ -19,19 +19,21 @@ import Color from '@/components/Color/index';
 
 import { backgroundPro } from '@/canvas/constants/defaults';
 
-import { updateSlide } from '@/actions/slides';
+import { updateSlideItem } from '@/actions/slides';
 
 const Home: NextPage = () => {
+  const dispatch = useDispatch();
+
+  const active = useRef(0);
+
   const [canvas, setCanvas]: any = useState();
   const [width, setWidth]: any = useState(null);
   const [widthBg, setWidthBg] = useState(1200);
   const [heightBg, setHeightBg] = useState(600);
-  const [active, setActive] = useState(0);
-  const [tabActive, setTabActive] = useState(0);
+  const [tabActive, setTabActive] = useState(1);
   const [color, setColor] = useState('#fff');
 
-  const slides = useSelector((state: any) => state.slides);
-  const dispatch = useDispatch();
+  const slides = useSelector((state: any) => state.slides.slides);
 
   useEffect(() => {
     const fetchsData = async () => {
@@ -106,6 +108,10 @@ const Home: NextPage = () => {
 
     window.addEventListener('resize', resize);
 
+    let panning = false;
+    let lastPosX: any;
+    let lastPosY: any;
+
     canvas?.on('mouse:wheel', (opt: any) => {
       const center = canvas.getCenter();
       var delta = opt.e.deltaY;
@@ -119,18 +125,10 @@ const Home: NextPage = () => {
       opt.e.stopPropagation();
     });
 
-    let panning = false;
-    let lastPosX: any;
-    let lastPosY: any;
-
-    canvas?.on('mouse:up', (e: any) => {
-      panning = false;
-    });
-
     canvas?.on('mouse:down', function (opt: any) {
       var evt = opt.e;
       panning = true;
-
+      console.log(active, 'down');
       lastPosX = evt.clientX;
       lastPosY = evt.clientY;
     });
@@ -147,6 +145,19 @@ const Home: NextPage = () => {
       }
     });
 
+    canvas?.on('mouse:up', (e: any) => {
+      panning = false;
+
+      const objs: any = {
+        objects: [backgroundPro],
+        active: active.current,
+      };
+
+      canvas?.getObjects().forEach((item: any) => objs.objects.push(item.toJSON()));
+
+      dispatch(updateSlideItem(objs));
+    });
+
     if (slides.length == 0) {
       canvas?.loadFromJSON(
         {
@@ -155,7 +166,7 @@ const Home: NextPage = () => {
         canvas?.renderAll.bind(canvas),
       );
     } else {
-      canvas?.loadFromJSON(slides[active], canvas?.renderAll.bind(canvas));
+      canvas?.loadFromJSON(slides[active.current], canvas?.renderAll.bind(canvas));
     }
 
     canvas?.requestRenderAll();
@@ -177,14 +188,7 @@ const Home: NextPage = () => {
         />
       </Toolbar>
       <Canvas setCanvas={setCanvas} />
-      <Slide
-        canvas={canvas}
-        active={active}
-        setActive={setActive}
-        color={color}
-        widthBg={widthBg}
-        heightBg={heightBg}
-      />
+      <Slide canvas={canvas} active={active} color={color} widthBg={widthBg} heightBg={heightBg} />
     </div>
   );
 };
