@@ -336,11 +336,11 @@ const DynamicImagePro = fabric.util.createClass(fabric.Group, {
   },
 });
 
-DynamicImagePro.fromObject = (
+DynamicImagePro.fromObject = async (
   options: DynamicImageObject,
   callback: (obj: DynamicImageObject) => any,
 ) => {
-  return callback(new DynamicImagePro(options));
+  return await callback(new DynamicImagePro(options));
 };
 
 var windowFabric: any = window.fabric;

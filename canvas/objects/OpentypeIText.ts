@@ -472,8 +472,8 @@ const OpentypeIText = fabric.util.createClass(fabric.IText, {
   },
 });
 
-OpentypeIText.fromObject = (options: any, callback: (obj: any) => any) => {
-  return callback(new OpentypeIText(options.text, options));
+OpentypeIText.fromObject = async (options: any, callback: (obj: any) => any) => {
+  return await callback(new OpentypeIText(options.text, options));
 };
 
 export default OpentypeIText;

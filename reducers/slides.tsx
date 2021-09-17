@@ -12,6 +12,10 @@ const slides = (state = initialState, action: any) => {
   switch (action.type) {
     case 'UPDATE_SLIDE':
       return payload;
+    case 'UPDATE_SLIDE_ITEM':
+      state[payload.active] = { objects: payload.objects };
+
+      return state;
     default:
       return state;
   }

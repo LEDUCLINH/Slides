@@ -787,8 +787,8 @@ const TextBoxPro = fabric.util.createClass(fabric.Group, {
   },
 });
 
-TextBoxPro.fromObject = (options: any, callback: (obj: any) => any) => {
-  return callback(new TextBoxPro(options));
+TextBoxPro.fromObject = async (options: any, callback: (obj: any) => any) => {
+  return await callback(new TextBoxPro(options));
 };
 
 export default TextBoxPro;

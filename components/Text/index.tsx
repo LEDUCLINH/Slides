@@ -9,13 +9,20 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/intergations/firebase';
 
 import Style from './Style';
+import { updateSlideItem } from '@/actions/slides';
+
+import { useDispatch } from 'react-redux';
 
 interface Props {
   canvas: any;
+  slides: any;
+  active: number;
 }
 
-export default function Index({ canvas }: Props) {
+export default function Index({ canvas, slides, active }: Props) {
   const [fonts, setFonts] = useState([]);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchsData = async () => {
@@ -33,10 +40,17 @@ export default function Index({ canvas }: Props) {
 
   const handleAddTextBox = async (font: any) => {
     const initTextBox = Data.Layers[0];
-
     initTextBox.src = font.url;
     initTextBox.fontFamily = font.name;
+
     const newTextBoxPro = new TextBox({ ...initTextBox, id: v4() });
+
+    dispatch(
+      updateSlideItem({
+        objects: [...slides[active].objects, newTextBoxPro.toJSON()],
+        active,
+      }),
+    );
 
     canvas.add(newTextBoxPro);
     canvas.setActiveObject(newTextBoxPro);

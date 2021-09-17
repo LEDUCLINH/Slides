@@ -3,19 +3,27 @@ import classnames from 'classnames';
 import { EllipsisOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
+import { fabric } from 'fabric';
 
 import { backgroundPro } from '@/canvas/constants/defaults';
 
 import Style from './Style';
 import { updateSlide } from '@/actions/slides';
+import { v4 } from 'uuid';
+
+import TextBox from '@/canvas/objects/TextBox';
+import Data from '@/canvas/utils/InitialsLayer.json';
 
 interface Props {
   active: any;
   setActive: any;
   canvas: any;
+  widthBg: any;
+  heightBg: any;
+  color: any;
 }
 
-export default function Index({ canvas, active, setActive }: Props) {
+export default function Index({ canvas, active, setActive, widthBg, heightBg, color }: Props) {
   const [item, setItem] = useState(0);
 
   const slides = useSelector((state: any) => state.slides);
@@ -56,6 +64,70 @@ export default function Index({ canvas, active, setActive }: Props) {
     </Menu>
   );
 
+  const handleColor = () => {
+    const bgUrl =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
+    fabric.Image.fromURL(bgUrl, (myImg: any) => {
+      myImg.set({
+        originX: 'center',
+        originY: 'center',
+        width: widthBg,
+        height: heightBg,
+        crossOrigin: 'anonymous',
+        backgroundColor: color,
+      });
+      var filter = new fabric.Image.filters.BlendColor({
+        color: color,
+        mode: 'tint',
+      });
+      myImg.filters.push(filter);
+      myImg.applyFilters();
+      canvas.setBackgroundImage(myImg, canvas.renderAll.bind(canvas));
+
+      if (canvas.width <= canvas.height) {
+        canvas.setViewportTransform([
+          canvas.width / widthBg - 0.2,
+          0,
+          0,
+          canvas.width / widthBg - 0.2,
+          canvas.getCenter().left + 211,
+          canvas.getCenter().top - 25,
+        ]);
+        canvas.requestRenderAll();
+        canvas.renderAll();
+      } else {
+        canvas.setViewportTransform([
+          canvas.height / heightBg - 0.2,
+          0,
+          0,
+          canvas.height / heightBg - 0.2,
+          canvas.getCenter().left + 211,
+          canvas.getCenter().top - 25,
+        ]);
+        canvas.requestRenderAll();
+        canvas.renderAll();
+      }
+
+      let scaleX = (canvas.getWidth() - 211) / widthBg;
+      const scaleY = canvas.getHeight() / heightBg;
+      if (heightBg >= widthBg) {
+        scaleX = scaleY;
+        if (canvas.getWidth() < widthBg * scaleX) {
+          scaleX = scaleX * (canvas.getWidth() / (widthBg * scaleX));
+        }
+      } else {
+        if (canvas.getHeight() < heightBg * scaleX) {
+          scaleX = scaleX * (canvas.getHeight() / (heightBg * scaleX));
+        }
+      }
+      const center = canvas.getCenter();
+
+      canvas.zoomToPoint(new fabric.Point(center.left + 211, center.top), scaleX - 0.25);
+      canvas.requestRenderAll();
+      canvas.renderAll();
+    });
+  };
+
   const handleItem = (v: number) => {
     setActive(v);
 
@@ -68,9 +140,23 @@ export default function Index({ canvas, active, setActive }: Props) {
     const result = [...slides];
     result[v] = objs;
 
-    dispatch(updateSlide([...result]));
+    dispatch(updateSlide(slides));
 
-    canvas?.loadFromJSON(result[v], canvas?.renderAll.bind(canvas));
+    if (slides[v]) {
+      canvas.clear();
+
+      var objects = slides[v].objects;
+      for (var i = 0; i < objects.length; i++) {
+        if (objects[i].type === 'textBoxPro') {
+          const newTextBoxPro = new TextBox(objects[i]);
+          canvas.add(newTextBoxPro);
+        }
+
+        if (objects[i].type === 'backgroundPro') {
+          handleColor();
+        }
+      }
+    }
     canvas?.requestRenderAll();
     canvas?.renderAll();
   };

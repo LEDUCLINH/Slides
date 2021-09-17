@@ -28,6 +28,7 @@ const Home: NextPage = () => {
   const [heightBg, setHeightBg] = useState(600);
   const [active, setActive] = useState(0);
   const [tabActive, setTabActive] = useState(0);
+  const [color, setColor] = useState('#fff');
 
   const slides = useSelector((state: any) => state.slides);
   const dispatch = useDispatch();
@@ -162,16 +163,28 @@ const Home: NextPage = () => {
     //
   }, [canvas]);
 
-  console.log(slides, 'slides');
   return (
     <div className="">
       <Tab tabActive={tabActive} setTabActive={setTabActive} />
-      <Panel tabActive={tabActive} canvas={canvas} />
+      <Panel tabActive={tabActive} canvas={canvas} slides={slides} active={active} />
       <Toolbar>
-        <Color canvas={canvas} widthBg={widthBg} heightBg={heightBg} />
+        <Color
+          canvas={canvas}
+          color={color}
+          setColor={setColor}
+          widthBg={widthBg}
+          heightBg={heightBg}
+        />
       </Toolbar>
       <Canvas setCanvas={setCanvas} />
-      <Slide canvas={canvas} active={active} setActive={setActive} />
+      <Slide
+        canvas={canvas}
+        active={active}
+        setActive={setActive}
+        color={color}
+        widthBg={widthBg}
+        heightBg={heightBg}
+      />
     </div>
   );
 };

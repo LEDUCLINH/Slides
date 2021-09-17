@@ -7,14 +7,15 @@ interface Props {
   canvas: any;
   widthBg: number;
   heightBg: number;
+  color: string;
+  setColor: any;
 }
 
 import Style from './Style';
 
-export default function Index({ canvas, heightBg, widthBg }: Props) {
+export default function Index({ canvas, heightBg, widthBg, color, setColor }: Props) {
   const colorRef: any = useRef(null);
   const [pickerVisiable, setVisible] = useState(false);
-  const [color, setColor] = useState('#fff');
 
   const handleColor = (e: any) => {
     const bgUrl =

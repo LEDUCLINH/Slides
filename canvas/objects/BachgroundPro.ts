@@ -252,8 +252,8 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
   },
 });
 
-BackgroundPro.fromObject = (options: any, callback: any) => {
-  return callback(new BackgroundPro(options));
+BackgroundPro.fromObject = async (options: any, callback: any) => {
+  return await callback(new BackgroundPro(options));
 };
 
 export default BackgroundPro;
