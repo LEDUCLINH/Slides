@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import classnames from 'classnames';
 import { EllipsisOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Button } from 'antd';
@@ -132,6 +132,8 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
   const handleItem = (v: number) => {
     active.current = v;
 
+    setItem(v);
+
     const objs: any = {
       objects: [],
     };
@@ -174,7 +176,7 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
               handleItem(index);
             }}
             key={index}
-            className={classnames('slide-item', active.current === index && 'slide-item-active')}
+            className={classnames('slide-item', item === index && 'slide-item-active')}
           >
             <Dropdown trigger={['click']} overlay={menu} placement="topCenter" arrow>
               <span
