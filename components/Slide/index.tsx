@@ -7,6 +7,7 @@ import { fabric } from 'fabric';
 
 import { backgroundPro } from '@/canvas/constants/defaults';
 import TextBox from '@/canvas/objects/TextBox';
+import DynamicImagePro from '@/canvas/objects/DynamicImage';
 
 import { updateSlide } from '@/actions/slides';
 
@@ -28,12 +29,12 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
 
   const addSlide = () => {
     const objs: any = {
-      color: '#fff',
+      color: slides[active.current].color,
       objects: [],
     };
 
     canvas?.getObjects().forEach((item: any, index: number) => {
-      objs.color = color;
+      objs.color = slides[active.current].color;
       objs.objects.push(item.toJSON());
     });
 
@@ -42,7 +43,7 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
       .filter((item: any) => item.toJSON().type === 'backgroundPro');
 
     if (!isBackground[0]) {
-      objs.objects.push({ ...backgroundPro, fill: color });
+      objs.objects.push({ ...backgroundPro, fill: slides[active.current].color });
     }
 
     const result = [...slides];
@@ -172,6 +173,11 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
         if (objects[i].type === 'textBoxPro') {
           const newTextBoxPro = new TextBox(objects[i]);
           canvas.add(newTextBoxPro);
+        }
+
+        if (objects[i].type === 'dynamicImagePro') {
+          const newDynamicPro = new DynamicImagePro(objects[i]);
+          canvas.add(newDynamicPro);
         }
 
         if (objects[i].type === 'backgroundPro') {
