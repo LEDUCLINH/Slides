@@ -2,24 +2,29 @@ import React, { useRef, useState, useEffect } from 'react';
 import { ChromePicker } from 'react-color';
 import { Tooltip } from 'antd';
 import { fabric } from 'fabric';
+import { useDispatch } from 'react-redux';
 
 interface Props {
   canvas: any;
   widthBg: number;
   heightBg: number;
   color: string;
-  setColor: any;
+  active: any;
 }
 
 import Style from './Style';
+import { updateSlideColor } from '@/actions/slides';
 
-export default function Index({ canvas, heightBg, widthBg, color, setColor }: Props) {
+export default function Index({ canvas, heightBg, widthBg, color, active }: Props) {
+  const dispatch = useDispatch();
+
   const colorRef: any = useRef(null);
   const [pickerVisiable, setVisible] = useState(false);
 
   const handleColor = (e: any) => {
     const bgUrl =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
+
     fabric.Image.fromURL(bgUrl, (myImg: any) => {
       myImg.set({
         originX: 'center',
@@ -35,51 +40,52 @@ export default function Index({ canvas, heightBg, widthBg, color, setColor }: Pr
       });
       myImg.filters.push(filter);
       myImg.applyFilters();
-      canvas.setBackgroundImage(myImg, canvas.renderAll.bind(canvas));
+      canvas?.setBackgroundImage(myImg, canvas?.renderAll.bind(canvas));
 
-      if (canvas.width <= canvas.height) {
-        canvas.setViewportTransform([
-          canvas.width / widthBg - 0.2,
+      if (canvas?.width <= canvas?.height) {
+        canvas?.setViewportTransform([
+          canvas?.width / widthBg - 0.2,
           0,
           0,
-          canvas.width / widthBg - 0.2,
-          canvas.getCenter().left + 211,
-          canvas.getCenter().top - 25,
+          canvas?.width / widthBg - 0.2,
+          canvas?.getCenter().left + 211,
+          canvas?.getCenter().top - 25,
         ]);
-        canvas.requestRenderAll();
-        canvas.renderAll();
+        canvas?.requestRenderAll();
+        canvas?.renderAll();
       } else {
-        canvas.setViewportTransform([
-          canvas.height / heightBg - 0.2,
+        canvas?.setViewportTransform([
+          canvas?.height / heightBg - 0.2,
           0,
           0,
-          canvas.height / heightBg - 0.2,
-          canvas.getCenter().left + 211,
-          canvas.getCenter().top - 25,
+          canvas?.height / heightBg - 0.2,
+          canvas?.getCenter().left + 211,
+          canvas?.getCenter().top - 25,
         ]);
-        canvas.requestRenderAll();
-        canvas.renderAll();
+        canvas?.requestRenderAll();
+        canvas?.renderAll();
       }
 
-      let scaleX = (canvas.getWidth() - 211) / widthBg;
-      const scaleY = canvas.getHeight() / heightBg;
+      let scaleX = (canvas?.getWidth() - 211) / widthBg;
+      const scaleY = canvas?.getHeight() / heightBg;
       if (heightBg >= widthBg) {
         scaleX = scaleY;
-        if (canvas.getWidth() < widthBg * scaleX) {
-          scaleX = scaleX * (canvas.getWidth() / (widthBg * scaleX));
+        if (canvas?.getWidth() < widthBg * scaleX) {
+          scaleX = scaleX * (canvas?.getWidth() / (widthBg * scaleX));
         }
       } else {
-        if (canvas.getHeight() < heightBg * scaleX) {
-          scaleX = scaleX * (canvas.getHeight() / (heightBg * scaleX));
+        if (canvas?.getHeight() < heightBg * scaleX) {
+          scaleX = scaleX * (canvas?.getHeight() / (heightBg * scaleX));
         }
       }
-      const center = canvas.getCenter();
+      const center = canvas?.getCenter();
 
-      canvas.zoomToPoint(new fabric.Point(center.left + 211, center.top), scaleX - 0.25);
-      canvas.requestRenderAll();
-      canvas.renderAll();
+      canvas?.zoomToPoint(new fabric.Point(center.left + 211, center.top), scaleX - 0.25);
+      canvas?.requestRenderAll();
+      canvas?.renderAll();
     });
-    setColor(e.hex);
+
+    dispatch(updateSlideColor({ active: active.current, color: e.hex }));
   };
 
   useEffect(() => {

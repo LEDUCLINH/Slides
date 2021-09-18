@@ -30,16 +30,37 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
 
   const addSlide = () => {
     const objs: any = {
-      objects: [backgroundPro],
+      color: '#fff',
+      objects: [],
     };
 
-    canvas?.getObjects().forEach((item: any) => objs.objects.push(item.toJSON()));
+    canvas?.getObjects().forEach((item: any, index: number) => {
+      objs.color = color;
+      objs.objects.push(item.toJSON());
+    });
+
+    const isBackground = canvas
+      ?.getObjects()
+      .filter((item: any) => item.toJSON().type === 'backgroundPro');
+
+    if (!isBackground[0]) {
+      objs.objects.push({ ...backgroundPro, fill: color });
+    }
 
     const result = [...slides];
     result[active.current] = objs;
-
+    console.log(
+      {
+        active: active.current,
+        slides: [...result, { objects: [backgroundPro], color: '#fff' }],
+      },
+      'hello',
+    );
     dispatch(
-      updateSlide({ active: active.current, slides: [...result, { objects: [backgroundPro] }] }),
+      updateSlide({
+        active: active.current,
+        slides: [...result, { objects: [backgroundPro], color: '#fff' }],
+      }),
     );
   };
 
@@ -130,18 +151,22 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
   };
 
   const handleItem = (v: number) => {
-    active.current = v;
-
-    setItem(v);
-
     const objs: any = {
       objects: [],
     };
 
     canvas?.clear();
 
-    canvas?.getObjects().forEach((item: any) => objs.objects.push(item.toJSON()));
+    canvas?.getObjects().forEach((item: any) => {
+      if (item.toJSON().type === 'backgroundPro') {
+        objs.objects.push({ ...item.toJSON(), fill: slides[active.current].color });
+      } else {
+        objs.objects.push(item.toJSON());
+      }
+    });
 
+    active.current = v;
+    setItem(v);
     const result = [...slides];
     result[v] = objs;
 
@@ -162,6 +187,30 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
         }
       }
     }
+
+    const bgUrl =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
+
+    fabric.Image.fromURL(bgUrl, (myImg: any) => {
+      myImg.set({
+        originX: 'center',
+        originY: 'center',
+        width: widthBg,
+        height: heightBg,
+        crossOrigin: 'anonymous',
+        backgroundColor: slides[active.current]['color'],
+      });
+      var filter = new fabric.Image.filters.BlendColor({
+        color: color,
+        mode: 'tint',
+      });
+      myImg.filters.push(filter);
+      myImg.applyFilters();
+      canvas.setBackgroundImage(myImg, canvas.renderAll.bind(canvas));
+
+      canvas.requestRenderAll();
+      canvas.renderAll();
+    });
 
     canvas?.requestRenderAll();
     canvas?.renderAll();

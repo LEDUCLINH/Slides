@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import { useState, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
 import { useSelector, useDispatch } from 'react-redux';
+import Head from 'next/head';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/intergations/firebase';
@@ -31,9 +32,9 @@ const Home: NextPage = () => {
   const [widthBg, setWidthBg] = useState(1200);
   const [heightBg, setHeightBg] = useState(600);
   const [tabActive, setTabActive] = useState(1);
-  const [color, setColor] = useState('#fff');
 
   const slides = useSelector((state: any) => state.slides.slides);
+  const color = useSelector((state: any) => state.slides.slides[active.current].color);
 
   useEffect(() => {
     const fetchsData = async () => {
@@ -158,6 +159,8 @@ const Home: NextPage = () => {
       dispatch(updateSlideItem(objs));
     });
 
+    canvas.clear();
+
     if (slides.length == 0) {
       canvas?.loadFromJSON(
         {
@@ -176,15 +179,19 @@ const Home: NextPage = () => {
 
   return (
     <div className="">
+      <Head>
+        <title>Slide Nemo</title>
+      </Head>
+
       <Tab tabActive={tabActive} setTabActive={setTabActive} />
       <Panel tabActive={tabActive} canvas={canvas} slides={slides} active={active} />
       <Toolbar>
         <Color
           canvas={canvas}
           color={color}
-          setColor={setColor}
           widthBg={widthBg}
           heightBg={heightBg}
+          active={active}
         />
       </Toolbar>
       <Canvas setCanvas={setCanvas} />

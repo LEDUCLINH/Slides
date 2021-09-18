@@ -77,7 +77,7 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
       } else {
         const bgUrl =
           'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
-        // const bgUrl = 'https://st.quantrimang.com/photos/image/2020/07/30/Hinh-Nen-Trang-10.jpg';
+
         fabric.Image.fromURL(
           bgUrl,
           (myImg: any) => {

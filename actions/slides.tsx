@@ -18,3 +18,10 @@ export const updateSlideActive = (data: any) => {
     payload: data,
   };
 };
+
+export const updateSlideColor = (data: any) => {
+  return {
+    type: 'UPDATE_SLIDE_COLOR',
+    payload: data,
+  };
+};
