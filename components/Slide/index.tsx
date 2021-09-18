@@ -49,13 +49,7 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
 
     const result = [...slides];
     result[active.current] = objs;
-    console.log(
-      {
-        active: active.current,
-        slides: [...result, { objects: [backgroundPro], color: '#fff' }],
-      },
-      'hello',
-    );
+
     dispatch(
       updateSlide({
         active: active.current,

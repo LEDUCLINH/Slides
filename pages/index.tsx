@@ -10,6 +10,8 @@ import { withRedux } from '@/intergations/redux';
 
 import Canvas from '@/canvas/Canvas';
 import BackgroundPro from '@/canvas/objects/BachgroundPro';
+import DynamicImagePro from '@/canvas/objects/DynamicImage';
+
 import { loadFontFamilies } from '@/canvas/utils/textUtil';
 
 import Panel from '@/components/Panel/index';
@@ -205,6 +207,7 @@ if (process.browser) {
 
   var windowFabric: any = window?.fabric;
   windowFabric.BackgroundPro = BackgroundPro;
+  windowFabric.DynamicImagePro = DynamicImagePro;
 }
 
 export default withRedux(Home);

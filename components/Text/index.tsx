@@ -9,6 +9,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/intergations/firebase';
 
 import Style from './Style';
+
 import { updateSlideItem } from '@/actions/slides';
 
 import { useDispatch } from 'react-redux';

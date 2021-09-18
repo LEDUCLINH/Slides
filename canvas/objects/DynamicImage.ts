@@ -343,7 +343,4 @@ DynamicImagePro.fromObject = async (
   return await callback(new DynamicImagePro(options));
 };
 
-var windowFabric: any = window.fabric;
-windowFabric.DynamicImagePro = DynamicImagePro;
-
 export default DynamicImagePro;

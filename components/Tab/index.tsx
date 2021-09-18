@@ -1,12 +1,13 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { Template, Text } from '@/svg/index';
+import { Template, Text, Photos } from '@/svg/index';
 
 import Style from './Style';
 
 const list = [
   { name: 'Mẫu', icon: <Template /> },
+  { name: 'Photo', icon: <Photos /> },
   { name: 'Text', icon: <Text /> },
 ];
 
