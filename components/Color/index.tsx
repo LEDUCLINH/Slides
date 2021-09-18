@@ -4,7 +4,9 @@ import { Tooltip } from 'antd';
 import { fabric } from 'fabric';
 import { useDispatch } from 'react-redux';
 
-import { updateSlideColor } from '@/actions/slides';
+import { updateSlideColor, updatePreviewSlide } from '@/actions/slides';
+
+import { Preview } from '@/svg/index';
 
 import Style from './Style';
 
@@ -14,9 +16,21 @@ interface Props {
   heightBg: number;
   color: string;
   active: any;
+  preview: any;
+  setPreview: any;
+  slides: any;
 }
 
-export default function Index({ canvas, heightBg, widthBg, color, active }: Props) {
+export default function Index({
+  canvas,
+  heightBg,
+  widthBg,
+  color,
+  active,
+  preview,
+  setPreview,
+  slides,
+}: Props) {
   const dispatch = useDispatch();
 
   const colorRef: any = useRef(null);
@@ -101,22 +115,38 @@ export default function Index({ canvas, heightBg, widthBg, color, active }: Prop
     return () => window.removeEventListener('mousedown', handleClick);
   }, [pickerVisiable]);
 
+  const handlePreview = () => {
+    setPreview(true);
+    dispatch(
+      updatePreviewSlide({
+        slides,
+        total: slides.length,
+        current: 0,
+      }),
+    );
+  };
+
   return (
     <Style color={color}>
-      <div className="canvas-fill" ref={colorRef}>
-        {!pickerVisiable ? (
-          <Tooltip title="Background Color" mouseLeaveDelay={0}>
-            <div
-              onClick={() => {
-                setVisible(true);
-                console.log('fbfgbnfgbfbgf');
-              }}
-              className="color-icon"
-            ></div>
-          </Tooltip>
-        ) : (
-          <ChromePicker color={color} onChange={handleColor} />
-        )}
+      <div className="preview" onClick={handlePreview}>
+        <Preview />
+      </div>
+      <div className="tool-fill">
+        <div className="canvas-fill" ref={colorRef}>
+          {!pickerVisiable ? (
+            <Tooltip title="Background Color" mouseLeaveDelay={0}>
+              <div
+                onClick={() => {
+                  setVisible(true);
+                  console.log('fbfgbnfgbfbgf');
+                }}
+                className="color-icon"
+              ></div>
+            </Tooltip>
+          ) : (
+            <ChromePicker color={color} onChange={handleColor} />
+          )}
+        </div>
       </div>
     </Style>
   );

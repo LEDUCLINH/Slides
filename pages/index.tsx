@@ -19,6 +19,7 @@ import Tab from '@/components/Tab/index';
 import Slide from '@/components/Slide/index';
 import Toolbar from '@/components/Toolbar/index';
 import Color from '@/components/Color/index';
+import Preview from '@/components/Preview/index';
 
 import { updateSlideItem } from '@/actions/slides';
 
@@ -26,6 +27,7 @@ const Home: NextPage = () => {
   const dispatch = useDispatch();
 
   const active = useRef(0);
+  const [preview, setPreview] = useState(false);
 
   const [canvas, setCanvas]: any = useState();
   const [width, setWidth]: any = useState(null);
@@ -108,6 +110,11 @@ const Home: NextPage = () => {
     }
 
     window.addEventListener('resize', resize);
+    window.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        setPreview(false);
+      }
+    });
 
     let panning = false;
     let lastPosX: any;
@@ -183,15 +190,19 @@ const Home: NextPage = () => {
         <title>Slide Nemo</title>
       </Head>
 
+      {preview && <Preview />}
       <Tab tabActive={tabActive} setTabActive={setTabActive} />
       <Panel tabActive={tabActive} canvas={canvas} slides={slides} active={active} />
       <Toolbar>
         <Color
           canvas={canvas}
+          slides={slides}
           color={color}
           widthBg={widthBg}
           heightBg={heightBg}
           active={active}
+          preview={preview}
+          setPreview={setPreview}
         />
       </Toolbar>
       <Canvas setCanvas={setCanvas} />

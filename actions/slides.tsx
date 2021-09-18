@@ -25,3 +25,10 @@ export const updateSlideColor = (data: any) => {
     payload: data,
   };
 };
+
+export const updatePreviewSlide = (data: any) => {
+  return {
+    type: 'UPDATE_PREVIEW_SLIDE',
+    payload: data,
+  };
+};

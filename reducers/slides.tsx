@@ -7,6 +7,11 @@ const initialState: any = {
       objects: [backgroundPro],
     },
   ],
+  preview: {
+    total: 0,
+    current: 0,
+    slides: [],
+  },
 };
 
 const slides = (state = initialState, action: any) => {
@@ -15,13 +20,17 @@ const slides = (state = initialState, action: any) => {
   switch (action.type) {
     case 'UPDATE_SLIDE':
       state.slides = payload.slides;
-      console.log(state.slides, 'state.slides');
+
       return { ...state };
+
     case 'UPDATE_SLIDE_ITEM':
       state.slides[payload.active]['objects'] = payload.objects;
+
       return { ...state, slides: state.slides };
+
     case 'UPDATE_SLIDE_ACTIVE_ITEM':
       return { ...state };
+
     case 'UPDATE_SLIDE_COLOR':
       const index = state.slides[payload.active].objects.findIndex(
         (i: any) => i.type === 'backgroundPro',
@@ -32,9 +41,21 @@ const slides = (state = initialState, action: any) => {
         state.slides[payload.active].objects[index]['fill'] = payload.color;
       }
 
-      console.log(state.slides, 'state.slides');
-
       return { ...state, slides: state.slides };
+
+    case 'UPDATE_PREVIEW_SLIDE':
+      state.preview.slides = payload.slides;
+
+      console.log(state.preview, 'state');
+      return {
+        ...state,
+        preview: {
+          ...state.preview,
+          total: state.preview.total,
+          current: state.preview.current,
+        },
+      };
+
     default:
       return { ...state };
   }

@@ -29,6 +29,7 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
       const zoomWidth = rectOptions.typeRender ? 0 : 0.25;
       const zoomTop = rectOptions.typeRender ? 0 : -25;
       const zoomBottom = rectOptions.typeRender ? 0 : 50;
+      const leftZoom = rectOptions.typeRender ? 0 : 211;
 
       if (rectOptions.src) {
         fabric.Image.fromURL(rectOptions.src, (myImg: any) => {
@@ -107,7 +108,7 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
                 0,
                 0,
                 this.canvas?.width / widthBg - zoomWidth,
-                this.canvas?.getCenter().left + 211,
+                this.canvas?.getCenter().left + leftZoom,
                 this.canvas?.getCenter().top + zoomTop,
               ]);
               this.canvas?.requestRenderAll();
@@ -118,14 +119,14 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
                 0,
                 0,
                 this.canvas?.height / heightBg - zoomWidth,
-                this.canvas?.getCenter().left + 211,
+                this.canvas?.getCenter().left + leftZoom,
                 this.canvas?.getCenter().top + zoomTop,
               ]);
               this.canvas?.requestRenderAll();
               this.canvas?.renderAll();
             }
 
-            let scaleX = (this.canvas?.getWidth() - 211) / widthBg;
+            let scaleX = (this.canvas?.getWidth() - leftZoom) / widthBg;
             const scaleY = this.canvas?.getHeight() / heightBg;
             if (heightBg >= widthBg) {
               scaleX = scaleY;
@@ -140,8 +141,8 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
             const center = this.canvas?.getCenter();
 
             this.canvas?.zoomToPoint(
-              new fabric.Point(center.left + 211, center.top),
-              scaleX - 0.25,
+              new fabric.Point(center.left + leftZoom, center.top),
+              scaleX - (rectOptions.typeRender ? 0 : 0.25),
             );
             this.canvas?.requestRenderAll();
             this.canvas?.renderAll();
