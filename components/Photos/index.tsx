@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
 import { fabric } from 'fabric';
-import Style from './Style';
-import Data from '@/canvas/utils/InitialsLayer.json';
-import DynamicImagePro from '@/canvas/objects/DynamicImage';
+import React, { useEffect, useState } from 'react';
+import { v4 } from 'uuid';
+import { useDispatch } from 'react-redux';
 
 import { db } from '@/intergations/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
-import { v4 } from 'uuid';
+import DynamicImagePro from '@/canvas/objects/DynamicImage';
+import Data from '@/canvas/utils/InitialsLayer.json';
 
 import { updateSlideItem } from '@/actions/slides';
 
-import { useDispatch } from 'react-redux';
+import Style from './Style';
 
 interface Props {
   canvas: any;

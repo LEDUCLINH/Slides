@@ -6,13 +6,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fabric } from 'fabric';
 
 import { backgroundPro } from '@/canvas/constants/defaults';
+import TextBox from '@/canvas/objects/TextBox';
+
+import { updateSlide } from '@/actions/slides';
 
 import Style from './Style';
-import { updateSlide } from '@/actions/slides';
-import { v4 } from 'uuid';
-
-import TextBox from '@/canvas/objects/TextBox';
-import Data from '@/canvas/utils/InitialsLayer.json';
 
 interface Props {
   active: any;

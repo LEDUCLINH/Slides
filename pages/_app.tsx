@@ -1,8 +1,9 @@
-import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import 'antd/dist/antd.css';
 import Router from 'next/router';
+
+import 'antd/dist/antd.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import '../styles/globals.css';
 
 // dev fix for css loader
 if (process.env.NODE_ENV !== 'production') {

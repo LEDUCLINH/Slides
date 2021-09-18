@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
+import Head from 'next/head';
 import { useState, useEffect, useRef } from 'react';
 import { fabric } from 'fabric';
 import { useSelector, useDispatch } from 'react-redux';
-import Head from 'next/head';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/intergations/firebase';
@@ -11,16 +11,14 @@ import { withRedux } from '@/intergations/redux';
 import Canvas from '@/canvas/Canvas';
 import BackgroundPro from '@/canvas/objects/BachgroundPro';
 import DynamicImagePro from '@/canvas/objects/DynamicImage';
-
 import { loadFontFamilies } from '@/canvas/utils/textUtil';
+import { backgroundPro } from '@/canvas/constants/defaults';
 
 import Panel from '@/components/Panel/index';
 import Tab from '@/components/Tab/index';
 import Slide from '@/components/Slide/index';
 import Toolbar from '@/components/Toolbar/index';
 import Color from '@/components/Color/index';
-
-import { backgroundPro } from '@/canvas/constants/defaults';
 
 import { updateSlideItem } from '@/actions/slides';
 

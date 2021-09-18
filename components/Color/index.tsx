@@ -4,6 +4,10 @@ import { Tooltip } from 'antd';
 import { fabric } from 'fabric';
 import { useDispatch } from 'react-redux';
 
+import { updateSlideColor } from '@/actions/slides';
+
+import Style from './Style';
+
 interface Props {
   canvas: any;
   widthBg: number;
@@ -11,9 +15,6 @@ interface Props {
   color: string;
   active: any;
 }
-
-import Style from './Style';
-import { updateSlideColor } from '@/actions/slides';
 
 export default function Index({ canvas, heightBg, widthBg, color, active }: Props) {
   const dispatch = useDispatch();

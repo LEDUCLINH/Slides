@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { v4 } from 'uuid';
+import { useDispatch } from 'react-redux';
 
 import TextBox from '@/canvas/objects/TextBox';
-
 import Data from '@/canvas/utils/InitialsLayer.json';
 
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/intergations/firebase';
 
-import Style from './Style';
-
 import { updateSlideItem } from '@/actions/slides';
 
-import { useDispatch } from 'react-redux';
+import Style from './Style';
 
 interface Props {
   canvas: any;

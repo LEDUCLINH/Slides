@@ -3,7 +3,6 @@ import Document, { Head, Main, NextScript, Html } from 'next/document';
 import flush from 'styled-jsx/server';
 import { configureLoadStyles } from '@microsoft/load-themed-styles';
 import { renderStatic } from 'glamor/server';
-
 import 'babel-polyfill';
 
 let _allStyles = '';
