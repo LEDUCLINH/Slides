@@ -92,22 +92,45 @@ export default function Index() {
 
     window.addEventListener('resize', resize);
 
-    canvas.clear();
-    const objetcs = previewSlide.slides[previewSlide.current].objects.map((i: any) => {
+    canvas.clear(canvas);
+    let ratio =  1200 / (window.innerWidth / 2)
+    let ratioHeight = 600 / (window.innerHeight / 2)
+    const data: any = []
+    let i = 0
+    previewSlide.slides[previewSlide.current].objects.forEach((a: any) => {
+      if (a.type === 'backgroundPro' && i !== 0) {
+        return
+      }
+
+      if (a.type === 'backgroundPro') {
+        i += 1
+      }
+      data.push(a)
+    })
+    const objetcs = data.map((i: any) => {
       const item: any = { ...i };
       if (item.type === 'backgroundPro') {
         item.fill = previewSlide.slides[previewSlide.current]['color'];
-        item.width = window.innerWidth * 0.8;
+        item.width = window.innerWidth / 2;
         item.height = window.innerHeight / 2;
-        item.typeRender = true;
+      } else {
+        item.width = item.width / ratio;
+        item.height = item.height / ratioHeight;
+        item.top = item.top / ratioHeight;
+        item.left = item.left / ratio;
+        item.minSize = item.minSize / ratio;
+        item.maxSize = item.maxSize / ratio;
       }
-        item.evented = false
-        item.selectable = false
-        item.typeRender = true;
+      
+      item.typeRender = true;
+      item.evented = false
+      item.selectable = false
       return {
         ...item,
       };
     })
+    console.log(objetcs, 'ratio')
+
     canvas?.loadFromJSON(
       {
         objects: objetcs},

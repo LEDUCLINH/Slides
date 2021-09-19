@@ -7,7 +7,7 @@ const Style = styled.div`
   top: 0;
   left: 0;
   z-index: 99999;
-  background: #fff;
+  background: #c2c2c2;
   display: flex;
   align-items: center;
   justify-content: center;

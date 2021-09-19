@@ -9,7 +9,7 @@ const Style = styled.div`
   overflow: hidden;
 
   #canvas-editor {
-    background-color: #edf0f2;
+    background-color: #000;
   }
 `;
 
