@@ -93,22 +93,24 @@ export default function Index() {
     window.addEventListener('resize', resize);
 
     canvas.clear();
-
+    const objetcs = previewSlide.slides[previewSlide.current].objects.map((i: any) => {
+      const item: any = { ...i };
+      if (item.type === 'backgroundPro') {
+        item.fill = previewSlide.slides[previewSlide.current]['color'];
+        item.width = window.innerWidth * 0.8;
+        item.height = window.innerHeight / 2;
+        item.typeRender = true;
+      }
+        item.evented = false
+        item.selectable = false
+        item.typeRender = true;
+      return {
+        ...item,
+      };
+    })
     canvas?.loadFromJSON(
       {
-        objects: previewSlide.slides[previewSlide.current].objects.map((i: any) => {
-          const item: any = { ...i };
-          if (item.type === 'backgroundPro')
-            item.fill = previewSlide.slides[previewSlide.current]['color'];
-          item.width = window.innerWidth;
-          item.height = window.innerHeight;
-          item.typeRender = true;
-
-          return {
-            ...item,
-          };
-        }),
-      },
+        objects: objetcs},
       canvas?.renderAll.bind(canvas),
     );
 
@@ -119,7 +121,9 @@ export default function Index() {
 
   return (
     <Style>
-      <Canvas setCanvas={setCanvas} />
+      <div className="wrap__canvas">
+        <Canvas setCanvas={setCanvas} />
+      </div>
     </Style>
   );
 }
@@ -130,5 +134,5 @@ if (process.browser) {
   var windowFabric: any = window?.fabric;
   windowFabric.BackgroundPro = BackgroundPro;
   windowFabric.DynamicImagePro = DynamicImagePro;
-  windowFabric.TextBox = TextBox;
+  windowFabric.TextBoxPro = TextBox;
 }

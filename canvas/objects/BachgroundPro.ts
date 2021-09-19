@@ -62,18 +62,6 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
               this.canvas?.getCenter().top,
             ]);
           }
-
-          //render image
-          if (rectOptions.typeRender) {
-            fabric.Object.NUM_FRACTION_DIGITS = 10;
-            const link = document.createElement('a');
-            const dataURL = this.canvas?.toDataURL({ format: 'png' });
-            link.download = 'image.png';
-            link.href = dataURL;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-          }
         });
       } else {
         const bgUrl =
@@ -146,18 +134,6 @@ const BackgroundPro = fabric.util.createClass(fabric.Rect, {
             );
             this.canvas?.requestRenderAll();
             this.canvas?.renderAll();
-
-            //render image
-            if (rectOptions.typeRender) {
-              fabric.Object.NUM_FRACTION_DIGITS = 10;
-              const link = document.createElement('a');
-              const dataURL = this.canvas?.toDataURL({ format: 'png' });
-              link.download = 'image.png';
-              link.href = dataURL;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }
           },
           { crossOrigin: 'anonymous' },
         );

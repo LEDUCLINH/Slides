@@ -6,6 +6,7 @@ const Style = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  overflow: hidden;
 
   #canvas-editor {
     background-color: #edf0f2;

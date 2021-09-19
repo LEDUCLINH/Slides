@@ -8,6 +8,10 @@ const Style = styled.div`
   left: 0;
   z-index: 99999;
   background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 `;
 
 export default Style;
