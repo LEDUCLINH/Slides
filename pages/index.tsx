@@ -20,6 +20,7 @@ import Slide from '@/components/Slide/index';
 import Toolbar from '@/components/Toolbar/index';
 import Color from '@/components/Color/index';
 import Preview from '@/components/Preview/index';
+import BottomBar from '@/components/BottomBar/index';
 
 import { updateSlideItem } from '@/actions/slides';
 
@@ -28,6 +29,7 @@ const Home: NextPage = () => {
 
   const active = useRef(0);
   const [preview, setPreview] = useState(false);
+  const currentSlide = useRef(0);
 
   const [canvas, setCanvas]: any = useState();
   const [width, setWidth]: any = useState(null);
@@ -190,7 +192,11 @@ const Home: NextPage = () => {
         <title>Slide Nemo</title>
       </Head>
 
-      {preview && <Preview />}
+      {preview && (
+        <Preview currentSlide={currentSlide}>
+          <BottomBar currentSlide={currentSlide} />
+        </Preview>
+      )}
       <Tab tabActive={tabActive} setTabActive={setTabActive} />
       <Panel tabActive={tabActive} canvas={canvas} slides={slides} active={active} />
       <Toolbar>

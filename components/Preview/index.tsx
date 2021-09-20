@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, cloneElement, Children } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fabric } from 'fabric';
 
@@ -10,7 +10,12 @@ import { backgroundPro } from '@/canvas/constants/defaults';
 
 import Style from './Style';
 
-export default function Index() {
+interface Props {
+  children: any;
+  currentSlide: any;
+}
+
+export default function Index({ children, currentSlide }: Props) {
   const [canvas, setCanvas]: any = useState();
 
   const previewSlide = useSelector((state: any) => state.slides.preview);
@@ -19,24 +24,6 @@ export default function Index() {
   const [widthBg, setWidthBg] = useState(1200);
   const [heightBg, setHeightBg] = useState(600);
   const [tabActive, setTabActive] = useState(1);
-
-  console.log(
-    {
-      objects: previewSlide.slides[previewSlide.current].objects.map((i: any) => {
-        const item: any = { ...i };
-        if (item.type === 'backgroundPro')
-          item.fill = previewSlide.slides[previewSlide.current]['color'];
-        item.width = window.innerWidth;
-        item.height = window.innerHeight;
-        item.typeRender = true;
-
-        return {
-          ...item,
-        };
-      }),
-    },
-    'hello',
-  );
 
   useEffect(() => {
     if (!canvas) return;
@@ -93,47 +80,47 @@ export default function Index() {
     window.addEventListener('resize', resize);
 
     canvas.clear(canvas);
-    let ratio =  1200 / (window.innerWidth / 2)
-    let ratioHeight = 600 / (window.innerHeight / 2)
-    const data: any = []
-    let i = 0
-    previewSlide.slides[previewSlide.current].objects.forEach((a: any) => {
+    let ratio = 1200 / (window.innerWidth / 2);
+    let ratioHeight = 600 / (window.innerHeight / 2);
+    const data: any = [];
+    let i = 0;
+    previewSlide.slides[currentSlide.current].objects.forEach((a: any) => {
       if (a.type === 'backgroundPro' && i !== 0) {
-        return
+        return;
       }
 
       if (a.type === 'backgroundPro') {
-        i += 1
+        i += 1;
       }
-      data.push(a)
-    })
+      data.push(a);
+    });
     const objetcs = data.map((i: any) => {
       const item: any = { ...i };
       if (item.type === 'backgroundPro') {
-        item.fill = previewSlide.slides[previewSlide.current]['color'];
-        item.width = window.innerWidth / 2;
-        item.height = window.innerHeight / 2;
+        item.fill = previewSlide.slides[currentSlide.current]['color'];
+        // item.width = window.innerWidth / 2;
+        // item.height = window.innerHeight / 2;
       } else {
-        item.width = item.width / ratio;
-        item.height = item.height / ratioHeight;
-        item.top = item.top / ratioHeight;
-        item.left = item.left / ratio;
-        item.minSize = item.minSize / ratio;
-        item.maxSize = item.maxSize / ratio;
+        // item.width = item.width / ratio;
+        // item.height = item.height / ratioHeight;
+        // item.top = item.top / ratioHeight;
+        // item.left = item.left / ratio;
+        // item.minSize = item.minSize / ratio;
+        // item.maxSize = item.maxSize / ratio;
       }
-      
+
       item.typeRender = true;
-      item.evented = false
-      item.selectable = false
+      item.evented = false;
+      item.selectable = false;
       return {
         ...item,
       };
-    })
-    console.log(objetcs, 'ratio')
+    });
 
     canvas?.loadFromJSON(
       {
-        objects: objetcs},
+        objects: objetcs,
+      },
       canvas?.renderAll.bind(canvas),
     );
 
@@ -145,7 +132,10 @@ export default function Index() {
   return (
     <Style>
       <div className="wrap__canvas">
-        <Canvas setCanvas={setCanvas} />
+        <Canvas setCanvas={setCanvas} bg="#333" />
+        {Children.map(children, (child) => {
+          return cloneElement(child, { canvas });
+        })}
       </div>
     </Style>
   );

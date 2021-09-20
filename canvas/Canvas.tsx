@@ -6,9 +6,10 @@ import Style from './Style';
 interface Props {
   children?: any;
   setCanvas?: any;
+  bg?: any;
 }
 
-export default function Canvas({ setCanvas, children }: Props) {
+export default function Index({ setCanvas, children, bg }: Props) {
   const canvasRef: any = useRef(null);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function Canvas({ setCanvas, children }: Props) {
   }, [setCanvas]);
 
   return (
-    <Style ref={canvasRef}>
+    <Style ref={canvasRef} bg={bg}>
       <canvas id="canvas-editor"></canvas>
       {children}
     </Style>

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-const Style = styled.div`
+interface Props {
+  bg: any;
+}
+
+const Style = styled.div<Props>`
   width: 100%;
   height: 100vh;
   position: absolute;
@@ -9,7 +13,7 @@ const Style = styled.div`
   overflow: hidden;
 
   #canvas-editor {
-    background-color: #000;
+    background: ${(props) => (props.bg ? props.bg : '#edf0f2')};
   }
 `;
 

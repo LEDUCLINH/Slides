@@ -8,7 +8,7 @@ const initialState: any = {
     },
   ],
   preview: {
-    total: 0,
+    total: 1,
     current: 0,
     slides: [],
   },
@@ -46,7 +46,6 @@ const slides = (state = initialState, action: any) => {
     case 'UPDATE_PREVIEW_SLIDE':
       state.preview.slides = payload.slides;
 
-      console.log(state.preview, 'state');
       return {
         ...state,
         preview: {
@@ -56,6 +55,15 @@ const slides = (state = initialState, action: any) => {
         },
       };
 
+    case 'UPDATE_CURRENT_SLIDE':
+      return {
+        ...state,
+
+        preview: {
+          ...state.preview,
+          current: payload,
+        },
+      };
     default:
       return { ...state };
   }

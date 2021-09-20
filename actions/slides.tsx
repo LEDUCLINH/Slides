@@ -32,3 +32,10 @@ export const updatePreviewSlide = (data: any) => {
     payload: data,
   };
 };
+
+export const updateCurrentSlide = (data: any) => {
+  return {
+    type: 'UPDATE_CURRENT_SLIDE',
+    payload: data,
+  };
+};
