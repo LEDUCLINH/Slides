@@ -194,7 +194,7 @@ const Home: NextPage = () => {
 
       {preview && (
         <Preview currentSlide={currentSlide}>
-          <BottomBar currentSlide={currentSlide} />
+          <BottomBar setPreview={setPreview} currentSlide={currentSlide} />
         </Preview>
       )}
       <Tab tabActive={tabActive} setTabActive={setTabActive} />

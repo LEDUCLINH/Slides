@@ -16,9 +16,10 @@ import Style from './Style';
 interface Props {
   currentSlide: any;
   canvas?: any;
+  setPreview: any;
 }
 
-export default function Index({ currentSlide, canvas }: Props) {
+export default function Index({ currentSlide, canvas, setPreview }: Props) {
   const dispatch = useDispatch();
   const widthBg = 1200;
   const heightBg = 600;
@@ -34,8 +35,6 @@ export default function Index({ currentSlide, canvas }: Props) {
     if (v === 'back' && currentSlide.current > 0) {
       currentSlide.current = currentSlide.current - 1;
     }
-
-    console.log(previewSlide, currentSlide.current, slides[currentSlide.current].color, 'next');
 
     canvas?.clear();
 
@@ -170,7 +169,13 @@ export default function Index({ currentSlide, canvas }: Props) {
           </div>
         </div>
         <div className="another">
-          <div className="">
+          <div
+            style={{ cursor: 'pointer' }}
+            className=""
+            onClick={() => {
+              setPreview(false);
+            }}
+          >
             <FullscreenOutlined />
           </div>
         </div>
