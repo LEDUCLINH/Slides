@@ -11,6 +11,10 @@ const Style = styled.div`
     cursor: pointer;
   }
 
+  .control__active {
+    display: flex;
+  }
+
   .tool-fill {
     position: relative;
     top: -46px;

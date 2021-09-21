@@ -36,6 +36,7 @@ const Home: NextPage = () => {
   const [widthBg, setWidthBg] = useState(1200);
   const [heightBg, setHeightBg] = useState(600);
   const [tabActive, setTabActive] = useState(1);
+  const [object, setObject] = useState({})
 
   const slides = useSelector((state: any) => state.slides.slides);
   const color = useSelector((state: any) => state.slides.slides[active.current].color);
@@ -121,6 +122,14 @@ const Home: NextPage = () => {
     let panning = false;
     let lastPosX: any;
     let lastPosY: any;
+
+    const evetnSelection = (evt: any) => {
+      const { target } = evt;
+      setObject(target)
+    }
+
+    canvas.on('selection:created', evetnSelection);
+    canvas.on('selection:updated', evetnSelection);
 
     canvas?.on('mouse:wheel', (opt: any) => {
       const center = canvas.getCenter();
@@ -209,6 +218,7 @@ const Home: NextPage = () => {
           active={active}
           preview={preview}
           setPreview={setPreview}
+          object={object}
         />
       </Toolbar>
       <Canvas setCanvas={setCanvas} />

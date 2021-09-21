@@ -8,6 +8,8 @@ import { updateSlideColor, updatePreviewSlide } from '@/actions/slides';
 
 import { Preview } from '@/svg/index';
 
+import { TextBox, Dynamic } from '@/components/ObjectActive'
+
 import Style from './Style';
 
 interface Props {
@@ -19,6 +21,7 @@ interface Props {
   preview: any;
   setPreview: any;
   slides: any;
+  object: any;
 }
 
 export default function Index({
@@ -30,12 +33,12 @@ export default function Index({
   preview,
   setPreview,
   slides,
+  object
 }: Props) {
   const dispatch = useDispatch();
 
   const colorRef: any = useRef(null);
   const [pickerVisiable, setVisible] = useState(false);
-
   const handleColor = (e: any) => {
     const bgUrl =
       'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
@@ -126,10 +129,27 @@ export default function Index({
     );
   };
 
+  const renderHeaderActive = () => {
+    const { type } = object
+    switch (type) {
+      
+      case 'textBoxPro':
+        return <TextBox object={object} />
+
+      case 'dynamicImagePro':
+        return <Dynamic />
+      
+      default: break
+    }
+  }
+
   return (
     <Style color={color}>
       <div className="preview" onClick={handlePreview}>
         <Preview />
+      </div>
+      <div className="control__active">
+        {renderHeaderActive()}
       </div>
       <div className="tool-fill">
         <div className="canvas-fill" ref={colorRef}>
