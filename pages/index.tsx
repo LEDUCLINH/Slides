@@ -128,8 +128,65 @@ const Home: NextPage = () => {
       setObject(target)
     }
 
+    const eventMoving = (opt: any) => {
+      const { target } = opt
+      if (target.type === 'activeSelection') {
+        const activeSelection = target as fabric.ActiveSelection;
+        activeSelection._objects.forEach((obj: any) => {
+          const left = target.left + obj.left + target.width / 2;
+          const top = target.top + obj.top + target.height / 2;
+          if (obj.type === 'dynamicImagePro') {
+            obj._updateMask(left, top)
+            return
+          }
+        })
+      }
+    };
+
+    const eventScaling = (opt: any) => {
+      const { target } = opt
+      if (target.type === 'activeSelection') {
+        const activeSelection = target as fabric.ActiveSelection;
+        const { scaleX } = target
+        activeSelection._objects.forEach((obj: any) => {
+          
+          const left = target.left + obj.left * scaleX + target.width * scaleX / 2;
+          const top = target.top + obj.top * scaleX + target.height * scaleX / 2;
+          if (obj.type === 'dynamicImagePro') {
+            obj._updateMask(left, top, obj.width * scaleX, obj.height * scaleX)
+            
+            return
+          }
+  
+        })
+      }
+    };
+
+    const eventScaled = (evt: any) => {
+      setTimeout(() => {
+        const { target } = evt;
+
+        if (target.type === 'activeSelection') {
+
+          canvas.discardActiveObject()
+          var sel = new fabric.ActiveSelection(target._objects, {
+            canvas,
+            borderColor: 'red',
+            dirty: true
+          });
+      
+          canvas.setActiveObject(sel);
+          canvas.renderAll()
+          
+        }
+      }, 0);
+    };
+
     canvas.on('selection:created', evetnSelection);
     canvas.on('selection:updated', evetnSelection);
+    canvas.on('object:moving', eventMoving);
+    canvas.on('object:scaling', eventScaling);
+    canvas.on('object:scaled', eventScaled);
 
     canvas?.on('mouse:wheel', (opt: any) => {
       const center = canvas.getCenter();

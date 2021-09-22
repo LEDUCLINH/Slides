@@ -48,7 +48,7 @@ const TextBoxPro = fabric.util.createClass(fabric.Group, {
         `${options.stroke?.slice(0, 7)}${percentToHex(options.opacityStroke || 100)}` || '#000000',
       lockScalingFlip: true,
       globalCompositeOperation: 'source-atop',
-      fill: '#000000',
+      fill: options.fill || '#000000',
       opentypeStrokeWidth: options.strokeWidth || 0,
       opentypeStroke: options.stroke || '#000000',
     };
@@ -586,7 +586,8 @@ const TextBoxPro = fabric.util.createClass(fabric.Group, {
     }
 
     if (name === 'fill') {
-      this.setColor(`${value}${percentToHex(this.opacityFill)}`);
+      // this.setColor(`${value}${percentToHex(this.opacityFill)}`);
+      this.setColor(value)
     }
 
     this.canvas.renderAll();
@@ -761,7 +762,7 @@ const TextBoxPro = fabric.util.createClass(fabric.Group, {
       textAlign: this.item(0).textAlign,
       caps: this.caps,
       multiline: this.multiline,
-      fill: this.fills[0]?.fill || this.item(0).fill,
+      fill: this.item(0).fill,
       fillId: '',
       fills: this.fills,
       stroke: this.item(0).opentypeStroke,

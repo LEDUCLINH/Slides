@@ -134,12 +134,12 @@ export default function Index({
     switch (type) {
       
       case 'textBoxPro':
-        return <TextBox object={object} />
+        return <TextBox canvas={canvas} object={object} />
 
       case 'dynamicImagePro':
-        return <Dynamic />
+        return <Dynamic canvas={canvas} object={object} />
       
-      default: break
+      default: return <></>
     }
   }
 
