@@ -1,10 +1,11 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const Style = styled.div`
   display: flex;
 
   .text__content {
     border-radius: 5px;
+    margin: 0 10px;
   }
 
   .text__fontFamily .ant-select-selector {
@@ -21,6 +22,8 @@ const Style = styled.div`
       cursor: pointer;
       padding: 3px 4px;
       border-radius: 4px;
+      margin: 0 10px;
+
       &.active {
         background-color: #000;
         color: #fff;
@@ -46,8 +49,9 @@ const Style = styled.div`
 
     span {
       cursor: pointer;
+      margin: 0 10px;
     }
   }
-`
+`;
 
-export default Style
+export default Style;
