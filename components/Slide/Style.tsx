@@ -18,11 +18,12 @@ const Style = styled.div`
 
     overflow: scroll;
     padding-bottom: 20px;
+    background-color: #b7b7b7;
   }
 
   .slide-item {
     box-shadow: 0 0 0 1px rgb(68 92 116 / 2%), 0 2px 8px rgb(57 76 96 / 15%);
-    min-width: 85px;
+    width: 85px;
     height: 48px;
     margin: 10px;
     cursor: pointer;
@@ -32,7 +33,13 @@ const Style = styled.div`
     .slide-item-icon {
       display: none;
     }
-
+    .canvas__realtime {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
     &:hover {
       .slide-item-icon {
         margin-top: 4px;

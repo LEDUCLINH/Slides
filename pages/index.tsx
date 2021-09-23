@@ -240,7 +240,9 @@ const Home: NextPage = () => {
         canvas?.renderAll.bind(canvas),
       );
     } else {
-      canvas?.loadFromJSON(slides[active.current], canvas?.renderAll.bind(canvas));
+      const { objects } = slides[active.current]
+      objects[0].full = false
+      canvas?.loadFromJSON({ objects }, canvas?.renderAll.bind(canvas));
     }
 
     canvas?.requestRenderAll();

@@ -216,56 +216,90 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
     canvas?.requestRenderAll();
     canvas?.renderAll();
   };
-
+  
   useEffect(() => {
-    if (!canvasSlide) return;
+    
+    let ratio = 1200 / 85
+    let ratioHeight = 600 / 48
 
-    canvasSlide.clear(canvasSlide);
-
-    const data = slides.map((slide: any) => {
-      const item = { objects: slide.objects };
-      const result = item.objects.filter((obj: any) => obj.type === 'backgroundPro');
-      console.log(item, 'item');
-      return { ...item };
+    const canvases: any = {}
+    slides.forEach((slide: any, index: any) => {
+      const { objects } = slide
+      let datas = []
+      if (objects[0].type !== 'backgroundPro') {
+        for (let i = objects.length - 1; i >=0; i--) {
+          datas.push(objects[i])
+        }
+      } else {
+        datas = [...objects]
+      }
+      datas[0].full = true
+      const newDatas = datas.map(item => {
+        if (item.type !== 'backgroundPro') {
+          item.width = item.width / ratio;
+          item.height = item.height / ratio;
+          item.top = item.top / ratio + 24;
+          item.left = item.left / ratioHeight + 42.5;
+          item.minSize = item.minSize / ratio;
+          item.maxSize = item.maxSize / ratio;
+        } else {
+          item.fill = slide['color'];
+        }
+        item.typeRender = true;
+        item.evented = false;
+        item.selectable = false;
+        return item
+      })
+      console.log('newData', newDatas)
+      canvases[index] = new fabric.Canvas(`canvas__${index}`, {
+        renderOnAddRemove: true,
+        allowTouchScrolling: true,
+        preserveObjectStacking: true,
+        centeredKey: 'shiftKey',
+      });
+      canvases[index].setWidth(85);
+      canvases[index].setHeight(48);
+      canvases[index].loadFromJSON({ objects: newDatas }, canvases[index].renderAll.bind(canvases[index]));
+      canvases[index].renderAll();
     });
+    
+    // console.log(data, 'data');
+    // // slides.objects.forEach((a: any) => {
+    // //   if (a.type === 'backgroundPro' && i !== 0) {
+    // //     return;
+    // //   }
 
-    console.log(data, 'data');
-    // slides.objects.forEach((a: any) => {
-    //   if (a.type === 'backgroundPro' && i !== 0) {
-    //     return;
-    //   }
+    // //   if (a.type === 'backgroundPro') {
+    // //     i += 1;
+    // //   }
+    // //   data.push(a);
+    // // });
+    // // const objetcs = data.map((i: any) => {
+    // //   const item: any = { ...i };
+    // //   if (item.type === 'backgroundPro') {
+    // //     item.fill = slides.slides[currentSlide.current]['color'];
+    // //   }
 
-    //   if (a.type === 'backgroundPro') {
-    //     i += 1;
-    //   }
-    //   data.push(a);
+    // //   item.typeRender = true;
+    // //   item.evented = false;
+    // //   item.selectable = false;
+    // //   return {
+    // //     ...item,
+    // //   };
+    // // });
+
+    // data.map((i: any) => {
+    //   canvasSlide?.loadFromJSON(i, canvasSlide?.renderAll.bind(canvasSlide));
+    //   canvasSlide?.requestRenderAll();
+    //   canvasSlide?.renderAll();
     // });
-    // const objetcs = data.map((i: any) => {
-    //   const item: any = { ...i };
-    //   if (item.type === 'backgroundPro') {
-    //     item.fill = slides.slides[currentSlide.current]['color'];
-    //   }
 
-    //   item.typeRender = true;
-    //   item.evented = false;
-    //   item.selectable = false;
-    //   return {
-    //     ...item,
-    //   };
-    // });
-
-    data.map((i: any) => {
-      canvasSlide?.loadFromJSON(i, canvasSlide?.renderAll.bind(canvasSlide));
-    });
-
-    canvasSlide?.requestRenderAll();
-    canvasSlide?.renderAll();
-  }, [canvasSlide]);
-  console.log(slides, 'slides');
+  }, [slides]);
+  // console.log(slides, 'slides');
   return (
     <Style>
       <div className="slide-wrap">
-        {slides.map((slide: any, index: number) => (
+        {slides.map((slide: any, index: any) => (
           <div
             onClick={() => {
               handleItem(index);
@@ -273,14 +307,21 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
             key={index}
             className={classnames('slide-item', item === index && 'slide-item-active')}
           >
-            <div className="">
-              <Canvas
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                position: 'relative',
+              }}
+            >
+              {/* <Canvas
                 id={`canvas-editor-${index}`}
                 setCanvas={setCanvasSlide}
                 index={index}
                 width="85px"
                 height="48px"
-              />
+              /> */}
+            <canvas className="canvas__realtime" id={`canvas__${index}`}></canvas>
             </div>
             <Dropdown trigger={['click']} overlay={menu} placement="topCenter" arrow>
               <span
