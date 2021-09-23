@@ -132,7 +132,7 @@ export default function Index({ children, currentSlide }: Props) {
   return (
     <Style>
       <div className="wrap__canvas">
-        <Canvas setCanvas={setCanvas} bg="#333" />
+        <Canvas setCanvas={setCanvas} bg="#333" id="canvas-editor" />
         {Children.map(children, (child) => {
           return cloneElement(child, { canvas });
         })}

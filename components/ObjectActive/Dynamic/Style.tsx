@@ -5,6 +5,7 @@ const Style = styled.div`
 
   .group__ctrl span {
     margin: 0 15px;
+    cursor: pointer;
   }
 `;
 

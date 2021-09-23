@@ -7,13 +7,17 @@ interface Props {
   children?: any;
   setCanvas?: any;
   bg?: any;
+  id: string;
+  width?: string;
+  height?: string;
+  index?: number;
 }
 
-export default function Index({ setCanvas, children, bg }: Props) {
+export default function Index({ setCanvas, children, bg, id, width, height, index }: Props) {
   const canvasRef: any = useRef(null);
 
   useEffect(() => {
-    const canvas = new fabric.Canvas('canvas-editor', {
+    const canvas = new fabric.Canvas(`${id}`, {
       renderOnAddRemove: true,
       allowTouchScrolling: true,
       preserveObjectStacking: true,
@@ -31,8 +35,8 @@ export default function Index({ setCanvas, children, bg }: Props) {
   }, [setCanvas]);
 
   return (
-    <Style ref={canvasRef} bg={bg}>
-      <canvas id="canvas-editor"></canvas>
+    <Style ref={canvasRef} width={width} height={height} bg={bg} index={index}>
+      <canvas id={id}></canvas>
       {children}
     </Style>
   );

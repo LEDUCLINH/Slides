@@ -36,7 +36,7 @@ const Home: NextPage = () => {
   const [widthBg, setWidthBg] = useState(1200);
   const [heightBg, setHeightBg] = useState(600);
   const [tabActive, setTabActive] = useState(1);
-  const [object, setObject] = useState({})
+  const [object, setObject] = useState({});
 
   const slides = useSelector((state: any) => state.slides.slides);
   const color = useSelector((state: any) => state.slides.slides[active.current].color);
@@ -125,40 +125,38 @@ const Home: NextPage = () => {
 
     const evetnSelection = (evt: any) => {
       const { target } = evt;
-      setObject(target)
-    }
+      setObject(target);
+    };
 
     const eventMoving = (opt: any) => {
-      const { target } = opt
+      const { target } = opt;
       if (target.type === 'activeSelection') {
         const activeSelection = target as fabric.ActiveSelection;
         activeSelection._objects.forEach((obj: any) => {
           const left = target.left + obj.left + target.width / 2;
           const top = target.top + obj.top + target.height / 2;
           if (obj.type === 'dynamicImagePro') {
-            obj._updateMask(left, top)
-            return
+            obj._updateMask(left, top);
+            return;
           }
-        })
+        });
       }
     };
 
     const eventScaling = (opt: any) => {
-      const { target } = opt
+      const { target } = opt;
       if (target.type === 'activeSelection') {
         const activeSelection = target as fabric.ActiveSelection;
-        const { scaleX } = target
+        const { scaleX } = target;
         activeSelection._objects.forEach((obj: any) => {
-          
-          const left = target.left + obj.left * scaleX + target.width * scaleX / 2;
-          const top = target.top + obj.top * scaleX + target.height * scaleX / 2;
+          const left = target.left + obj.left * scaleX + (target.width * scaleX) / 2;
+          const top = target.top + obj.top * scaleX + (target.height * scaleX) / 2;
           if (obj.type === 'dynamicImagePro') {
-            obj._updateMask(left, top, obj.width * scaleX, obj.height * scaleX)
-            
-            return
+            obj._updateMask(left, top, obj.width * scaleX, obj.height * scaleX);
+
+            return;
           }
-  
-        })
+        });
       }
     };
 
@@ -167,17 +165,15 @@ const Home: NextPage = () => {
         const { target } = evt;
 
         if (target.type === 'activeSelection') {
-
-          canvas.discardActiveObject()
+          canvas.discardActiveObject();
           var sel = new fabric.ActiveSelection(target._objects, {
             canvas,
             borderColor: 'red',
-            dirty: true
+            dirty: true,
           });
-      
+
           canvas.setActiveObject(sel);
-          canvas.renderAll()
-          
+          canvas.renderAll();
         }
       }, 0);
     };
@@ -249,7 +245,6 @@ const Home: NextPage = () => {
 
     canvas?.requestRenderAll();
     canvas?.renderAll();
-    //
   }, [canvas]);
 
   return (
@@ -278,7 +273,7 @@ const Home: NextPage = () => {
           object={object}
         />
       </Toolbar>
-      <Canvas setCanvas={setCanvas} />
+      <Canvas setCanvas={setCanvas} id="canvas-editor" />
       <Slide canvas={canvas} active={active} color={color} widthBg={widthBg} heightBg={heightBg} />
     </div>
   );

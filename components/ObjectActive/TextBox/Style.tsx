@@ -34,11 +34,14 @@ const Style = styled.div`
   .text__color {
     position: relative;
     line-height: 25px;
+    cursor: pointer;
+    min-width: 25px;
 
     .color__absolute {
       position: absolute;
-      top: 0;
+      top: 10px;
       left: 0;
+      min-width: 25px;
     }
   }
 

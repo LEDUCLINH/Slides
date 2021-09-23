@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { EllipsisOutlined, DeleteOutlined, CopyOutlined } from '@ant-design/icons';
 import { Menu, Dropdown, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { fabric } from 'fabric';
 
+import Canvas from '@/canvas/Canvas';
 import { backgroundPro } from '@/canvas/constants/defaults';
 import TextBox from '@/canvas/objects/TextBox';
 import DynamicImagePro from '@/canvas/objects/DynamicImage';
@@ -26,6 +27,8 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
 
   const slides = useSelector((state: any) => state.slides.slides);
   const dispatch = useDispatch();
+
+  const [canvasSlide, setCanvasSlide]: any = useState();
 
   const addSlide = () => {
     const objs: any = {
@@ -214,6 +217,51 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
     canvas?.renderAll();
   };
 
+  useEffect(() => {
+    if (!canvasSlide) return;
+
+    canvasSlide.clear(canvasSlide);
+
+    const data = slides.map((slide: any) => {
+      const item = { objects: slide.objects };
+      const result = item.objects.filter((obj: any) => obj.type === 'backgroundPro');
+      console.log(item, 'item');
+      return { ...item };
+    });
+
+    console.log(data, 'data');
+    // slides.objects.forEach((a: any) => {
+    //   if (a.type === 'backgroundPro' && i !== 0) {
+    //     return;
+    //   }
+
+    //   if (a.type === 'backgroundPro') {
+    //     i += 1;
+    //   }
+    //   data.push(a);
+    // });
+    // const objetcs = data.map((i: any) => {
+    //   const item: any = { ...i };
+    //   if (item.type === 'backgroundPro') {
+    //     item.fill = slides.slides[currentSlide.current]['color'];
+    //   }
+
+    //   item.typeRender = true;
+    //   item.evented = false;
+    //   item.selectable = false;
+    //   return {
+    //     ...item,
+    //   };
+    // });
+
+    data.map((i: any) => {
+      canvasSlide?.loadFromJSON(i, canvasSlide?.renderAll.bind(canvasSlide));
+    });
+
+    canvasSlide?.requestRenderAll();
+    canvasSlide?.renderAll();
+  }, [canvasSlide]);
+  console.log(slides, 'slides');
   return (
     <Style>
       <div className="slide-wrap">
@@ -225,6 +273,15 @@ export default function Index({ canvas, active, widthBg, heightBg, color }: Prop
             key={index}
             className={classnames('slide-item', item === index && 'slide-item-active')}
           >
+            <div className="">
+              <Canvas
+                id={`canvas-editor-${index}`}
+                setCanvas={setCanvasSlide}
+                index={index}
+                width="85px"
+                height="48px"
+              />
+            </div>
             <Dropdown trigger={['click']} overlay={menu} placement="topCenter" arrow>
               <span
                 onClick={(e) => {
